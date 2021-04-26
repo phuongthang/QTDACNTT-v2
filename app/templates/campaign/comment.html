@@ -1,0 +1,70 @@
+{% extends 'base/master.html'%}
+{% block title %}
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Bình luận</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+              <li class="breadcrumb-item active">Bình luận</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+{% endblock%}
+{% block content %}
+<div class="container-fluid">
+        <div class="table-responsive mailbox-messages" id="table-data">
+                <table class="table table-hover table-striped">
+                  <tbody id="table-comment">
+
+                  </tbody>
+                </table>
+                <!-- /.table -->
+              </div>
+</div>
+{%endblock%}
+
+{% block js%}
+<script src="{{url_for('static',filename='dashboard/dist/js/jquery.slimscroll.js')}}"></script>
+<script>
+  $('#table-data').slimScroll({
+        height: '600px'
+   });
+</script>
+<script>
+$(document).ready(function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var keys = urlParams.toString();
+            var url = '/comment?'+ keys;
+            $.ajax({
+                type: "get",
+                url: url,
+                success: function(data) {
+                    var i = -1;
+                    console.log(data);
+                    $.each(data.comments, function(key, value) {
+                    i = i + 1;
+                    $('#table-comment').append('<tr><td><div><input type="checkbox" value=""></div></td><td class=""><a href="#" class="check-label" id="label-item'+i+'"><b>'+value.label+'</b></a></td><td class="">'+value.text+'<td class="">'+new Date(value["date"]["$date"]).toLocaleDateString("ca-ES")+'</td></tr>')});
+                    for (var i = 0; i < document.querySelectorAll('.check-label').length; i = i + 1) {
+                            if (document.querySelectorAll('.check-label')[i].textContent == "positive") {
+                                document.querySelector('#label-item'+i).style.color = "#49A9EA";
+
+                                }
+                            if (document.querySelectorAll('.check-label')[i].textContent == "negative") {
+                                    document.querySelector('#label-item'+i).style.color = "#36CAAB";
+
+                            }
+                            if (document.querySelectorAll('.check-label')[i].textContent == "neutral") {
+                                    document.querySelector('#label-item'+i).style.color = "#34495E";
+
+                            }
+                        }
+                }
+
+            });
+    });
+</script>
+{% endblock%}
