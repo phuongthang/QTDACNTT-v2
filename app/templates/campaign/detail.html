@@ -1,0 +1,204 @@
+{% extends 'base/master.html'%}
+{% block title %}
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Chiến dịch</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+              <li class="breadcrumb-item active">Chi tiết chiến dịch</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+{% endblock%}
+{% block content %}
+<div class="container-fluid">
+        <div class="row">
+          <!-- left column -->
+          <div class="col-md-4">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Thông tin chiến dịch</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form>
+                <div class="card-body">
+                  <div class="form-group">
+                    <label>Tên chiến dịch :</label>
+                    <input type="text" class="form-control" placeholder="Tên chiến dịch" id="name">
+                  </div>
+                    <div class="form-group">
+                    <label>Mô tả :</label>
+                    <input type="text" class="form-control" placeholder="Mô tả" id="description">
+                  </div>
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label>Ngày bắt đầu :</label>
+                            <input type="text" class="form-control" id="startTime">
+                        </div>
+                        <div class="col-lg-6">
+                            <label>Ngày kết thúc :</label>
+                            <input type="text" class="form-control" id="endTime">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    <label>Link :</label>
+                    <input type="text" class="form-control" placeholder="Url" id="url">
+                  </div>
+                    <div class="form-group">
+                    <label>Từ khóa :</label>
+                    <input type="text" class="form-control" placeholder="Từ khóa" id="keyWord">
+                  </div>
+
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer text-center ">
+                </div>
+
+              </form>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <!-- general form elements -->
+            <div class="card card-primary" style="height:540px">
+              <div class="card-header">
+                <h3 class="card-title">Biểu đồ thống kê</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <div class="card-body">
+                  <div>
+                     <div class="text-center">
+                              <canvas id="myChart" width="250" height="200"></canvas>
+                     </div>
+                  </div>
+
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer text-center ">
+                </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <!-- general form elements -->
+            <div class="card card-primary" >
+              <div class="card-header">
+                <h3 class="card-title">Danh sách bài viết</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <div class="card-body"  >
+                <div id="list-post">
+
+                </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer text-center ">
+                </div>
+            </div>
+          </div>
+        </div>
+</div>
+<div class="card-footer text-center ">
+    <a href="{{ url_for('show') }}" class="btn btn-danger"><i class="fas fa-undo-alt"></i></i> Trở về</a>
+</div>
+{%endblock%}
+{%block js%}
+<script src="{{url_for('static',filename='dashboard/dist/js/jquery.slimscroll.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+  $('#list-post').slimScroll({
+        height: '430px'
+   });
+</script>
+<script>
+    $(document).ready(function(){
+        var urlParams = new URLSearchParams(window.location.search);
+        var names = urlParams.get('campaign').toString();
+        var url_getCampaign = '/campaign?name='+names;
+            $.ajax({
+                type: "get",
+                url: url_getCampaign,
+                success: function(data) {
+                    $('#name').val(data.name);
+                    $('#description').val(data.description);
+                    $('#startTime').val(new Date(data["startTime"]["$date"]).toLocaleDateString("ca-ES"));
+                    $('#endTime').val(new Date(data["endTime"]["$date"]).toLocaleDateString("ca-ES"));
+                    $('#url').val(data.links[0]);
+                    $('#keyWord').val(data.keyword);
+
+                    var total_comments,total_pos,total_neg,total_neu;
+                    total_comments = parseInt(data.total_comments)
+                    total_pos = parseInt(data.total_pos);
+                    total_neg = parseInt(data.total_neg);
+                    total_neu = parseInt(data.total_neu);
+
+                    let labels,field,colors,myChart,chart;
+                    labels = ['Positive', 'Negative', 'Neutral'];
+                    field = [total_pos, total_neg, total_neu];
+                    colors = ['#49A9EA', '#36CAAB', '#34495E'];
+
+                    myChart = document.getElementById("myChart").getContext('2d');
+
+                    chart = new Chart(myChart, {
+                        type: 'pie',
+                        data: {
+                        labels: labels,
+                        datasets: [ {
+                        data: field,
+                        backgroundColor: colors
+                        }]
+                        },
+                        options: {
+                        title: {
+                            text: "Campaign data analysis",
+                            display: true
+                            }
+                            }
+                    });
+
+                }
+
+            });
+
+            var url_getPost  = '/comment?campaign='+names;
+            $.ajax({
+                type: "get",
+                url: url_getPost ,
+                success: function(data) {
+                  $.each(data.comments, function(key, value) {
+                            $("#list-post").append(`<div class="timeline-item">
+                  <span class="time"><i class="fas fa-clock" style="margin-right:10px" ></i>`+ new Date(value["date"]["$date"]).toLocaleDateString("ca-ES") +`</span>
+                  <div class="post-content">
+                  <hr>
+                  <a href="{{url_for('comments')}}?post_id=`+value.post_id+`">
+                    <div class="timeline-body post-text" style="height:50px">
+                    `+value.text+`
+                  </div>
+                  </a>
+                  <hr>
+                  <div>
+                </div>`);
+                        });
+                }
+
+            });
+    });
+</script>
+<style>
+  .post-content:hover{
+   background-color: aliceblue;
+  }
+  .post-text{
+    overflow:hidden;
+    text-overflow: ellipsis;
+  }
+</style>
+{% endblock %}
