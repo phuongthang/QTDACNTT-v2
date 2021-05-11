@@ -1,9 +1,16 @@
 from flask import Flask, render_template, Blueprint
+ feature/campaign-crawler
+
 from app.database import db
+ develop
 from app.services.facebook import fb
 
 
 app = Flask(__name__)
+feature/campaign-crawler
+app.register_blueprint(fb)
+
+
 app.config["MONGODB_SETTINGS"] = {"db": "devc", "host": "localhost", "port": 27017}
 app.register_blueprint(fb)
 
@@ -41,6 +48,5 @@ def comments():
 @app.route("/predicts")
 def predicts():
     return render_template("campaign/predicts.html")
-
 
 app.run()
