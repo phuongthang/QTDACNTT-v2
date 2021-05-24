@@ -6,7 +6,7 @@ import requests_oauthlib
 from requests_oauthlib.compliance_fixes import facebook_compliance_fix
 
 # Your ngrok url, obtained after running "ngrok http 5000"
-URL = "https://b2eee988fa35.ngrok.io"
+URL = ""
 
 FB_CLIENT_ID = os.environ.get("FB_CLIENT_ID")
 FB_CLIENT_SECRET = os.environ.get("FB_CLIENT_SECRET")
