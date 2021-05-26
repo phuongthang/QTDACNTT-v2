@@ -51,5 +51,4 @@ def comments():
 def predicts():
     return render_template("campaign/predicts.html")
 
-
 app.run()
