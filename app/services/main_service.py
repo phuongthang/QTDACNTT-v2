@@ -130,11 +130,11 @@ def predict_sentiment_campaign(model, campaign_name):
 def create_campaign(model, campaign_name, email, password, keyword, links, start_time, end_time):
     crawl(campaign_name, email, password, keyword, start_time, end_time, links)
 
-    time.sleep(2)
+    time.sleep(3)
 
     predict_sentiment_campaign(model, campaign_name)
 
-    time.sleep(2)  # make sure everything is saved to database before analysing
+    time.sleep(3)  
 
     analyse_campaign(campaign_name)
 
