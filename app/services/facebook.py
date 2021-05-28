@@ -5,6 +5,7 @@ from flask import Blueprint, redirect, url_for
 import requests_oauthlib
 from requests_oauthlib.compliance_fixes import facebook_compliance_fix
 
+#third side server
 URL = ""
 
 FB_CLIENT_ID = os.environ.get("FB_CLIENT_ID")
