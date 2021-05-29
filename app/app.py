@@ -51,4 +51,8 @@ def comments():
 def predicts():
     return render_template("campaign/predicts.html")
 
+@app.route("/edit-comment")
+def predicts():
+    return render_template("edit/comment.html")
+    
 app.run()
