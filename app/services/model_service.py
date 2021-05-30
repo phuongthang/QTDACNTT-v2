@@ -127,7 +127,7 @@ def normalize_text(text):
         "e˜": "ẽ",
         "y˜": "ỹ",
         "a´": "á",
-        # Quy các icon về 2 loại emoj: Tích cực hoặc tiêu cực
+        #qui cac icon
         "👹": "nagative",
         "👻": "positive",
         "💃": "positive",
@@ -449,7 +449,7 @@ def normalize_text(text):
 
     text = u" ".join(texts)
 
-    # remove nốt những ký tự thừa thãi
+    # remove nốt những ký tự thừa 
     text = text.replace(u'"', u" ")
     text = text.replace(u"️", u"")
     text = text.replace("🏻", "")
