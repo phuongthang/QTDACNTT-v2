@@ -11,7 +11,7 @@ import os
 
 def init_model():
     return load_model_svm()
-    # return load_model_lgr()
+    
 
 
 def predict_sentiment(model, text):
@@ -105,7 +105,6 @@ def get_comments_of_campaign(campaign_name):
         post_comments = []
         comments = models.Comment.objects(post_id=post.post_id)
         for comment in comments:
-            # campaign_comments.append(comment)
             post_comments.append(comment.to_mongo())
         post.comments = post_comments
         campaign_comments.append(post)
@@ -115,8 +114,6 @@ def get_comments_of_campaign(campaign_name):
 
 def predict_sentiment_campaign(model, campaign_name):
     posts = models.Post.objects(campaign=campaign_name)
-    # if post is None:
-    #     return None
     for post in posts:
         comments = models.Comment.objects(post_id=post.post_id)
         for comment in comments:
@@ -129,13 +126,10 @@ def predict_sentiment_campaign(model, campaign_name):
 
 def create_campaign(model, campaign_name, email, password, keyword, links, start_time, end_time):
     crawl(campaign_name, email, password, keyword, start_time, end_time, links)
-
     time.sleep(3)
-
     predict_sentiment_campaign(model, campaign_name)
-
+    time.sleep(2)  
     time.sleep(3)  
-
     analyse_campaign(campaign_name)
 
 
