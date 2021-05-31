@@ -75,15 +75,14 @@ def predict_svm(model, text):
 
 
 def normalize_text(text):
-    # Remove các ký tự kéo dài: vd: đẹppppppp
+    
     text = re.sub(
         r"([A-Z])\1+", lambda m: m.group(1).upper(), text, flags=re.IGNORECASE
     )
 
-    # Chuyển thành chữ thường
+    
     text = text.lower()
 
-    # Chuẩn hóa tiếng Việt, xử lý emoj, chuẩn hóa tiếng Anh, thuật ngữ
     replace_list = {
         "òa": "oà",
         "óa": "oá",
@@ -128,7 +127,7 @@ def normalize_text(text):
         "e˜": "ẽ",
         "y˜": "ỹ",
         "a´": "á",
-        # Quy các icon về 2 loại emoj: Tích cực hoặc tiêu cực
+        #qui cac icon
         "👹": "nagative",
         "👻": "positive",
         "💃": "positive",
@@ -450,7 +449,7 @@ def normalize_text(text):
 
     text = u" ".join(texts)
 
-    # remove nốt những ký tự thừa thãi
+    # remove nốt những ký tự thừa 
     text = text.replace(u'"', u" ")
     text = text.replace(u"️", u"")
     text = text.replace("🏻", "")
