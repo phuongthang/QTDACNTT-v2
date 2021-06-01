@@ -7,7 +7,7 @@ from app import app
 
 predict = Blueprint('predict', __name__)
 
-
+#post json data to predict_sentiment
 @predict.route('/predict', methods=['POST'])
 def predict_sentiment_test():
     data = request.get_json()
