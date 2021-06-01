@@ -1,5 +1,4 @@
 import crochet
-
 crochet.setup()
 
 from app import app
@@ -44,7 +43,7 @@ def create_campaign():
         endTime=end_time,
         keyword=keyword,
         links=links,
-        status="working"  # to identify iéf it crawling and analysing data or done
+        status="working"  
     )
 
     try:
@@ -53,7 +52,6 @@ def create_campaign():
         print(ex)
         return Response('Campaign can not be created !', status=500)
 
-    # make sure campaign is saved to db
     time.sleep(1)
 
     campaign_thread = threading.Thread(target=main_service.create_campaign, kwargs={'model': app.model,

@@ -12,7 +12,7 @@ import os
 def init_model():
     return load_model_svm()
     
-
+#Predict comments
 
 def predict_sentiment(model, text):
     text_en = normalize_text(text)
