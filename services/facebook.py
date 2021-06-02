@@ -20,7 +20,7 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 fb = Blueprint("facebook", __name__)
 
-
+#Login to Facebook
 @fb.route("/fb-login")
 def login():
     facebook = requests_oauthlib.OAuth2Session(
