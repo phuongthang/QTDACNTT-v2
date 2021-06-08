@@ -44,7 +44,7 @@ def create_campaign():
         endTime=end_time,
         keyword=keyword,
         links=links,
-        status="working"  # to identify iéf it crawling and analysing data or done
+        status="working"  
     )
 
     try:
