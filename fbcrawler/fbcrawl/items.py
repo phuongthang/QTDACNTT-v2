@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
 
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
 from scrapy.loader.processors import TakeFirst, Join, MapCompose
@@ -31,12 +26,12 @@ def reactions_strip(string, loader_context):
     lang = loader_context['lang']
     if lang == 'it':
         newstring = string[0]
-        # 19.298.873
+        
         if len(newstring.split()) == 1:
             while newstring.rfind('.') != -1:
                 newstring = newstring[0:newstring.rfind('.')] + newstring[newstring.rfind('.') + 1:]
             return newstring
-        # Pamela, Luigi e altri 4
+
         else:
             return string
             friends = newstring.count(' e ') + newstring.count(',')
