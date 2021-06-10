@@ -4,7 +4,7 @@ from app.database import models
 
 post = Blueprint('post', __name__)
 
-
+#display campaign
 @post.route("/post")
 def get_posts_of_campaign():
     post_id = request.args.get('post_id')
