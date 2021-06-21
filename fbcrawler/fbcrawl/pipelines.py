@@ -20,12 +20,15 @@ class FbcrawlPipeline(object):
 
     @classmethod
     def from_crawler(cls, crawler):
+        ## pull in information from settings.py
         return cls(
             mongo_uri=crawler.settings.get('MONGO_URI'),
             mongo_db=crawler.settings.get('MONGO_DATABASE', 'items')
         )
 
     def open_spider(self, spider):
+        ## initializing spider
+        ## opening db connection
         self.client = pymongo.MongoClient(self.mongo_uri)
         self.db = self.client[self.mongo_db]
 
