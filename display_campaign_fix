@@ -1,0 +1,113 @@
+{% extends 'base/master.html'%}
+{% block title %}
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Chiến dịch</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+              <li class="breadcrumb-item active">Chiến dịch</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+{% endblock%}
+{% block content %}
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+          <!-- left column -->
+          <div class="col-md-8">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Thông tin chiến dịch</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form id="form">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label>Tên chiến dịch :</label>
+                    <input type="text" class="form-control" placeholder="Tên chiến dịch" id="name" autocomplete="off">
+                  </div>
+                    <div class="form-group">
+                    <label>Mô tả :</label>
+                    <input type="text" class="form-control" placeholder="Mô tả" id="description" autocomplete="off">
+                  </div>
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label>Ngày bắt đầu :</label>
+                            <input type="date" class="form-control" id="startTime">
+                        </div>
+                        <div class="col-lg-6">
+                            <label>Ngày kết thúc :</label>
+                            <input type="date" class="form-control" id="endTime">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    <label>Link :</label>
+                    <input type="text" class="form-control" placeholder="Url" id="url" autocomplete="off">
+                  </div>
+                    <div class="form-group">
+                    <label>Từ khóa :</label>
+                    <input type="text" class="form-control" placeholder="Từ khóa" id="keyWord" autocomplete="off">
+                  </div>
+
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer text-center ">
+
+                  <button type="submit" class="btn btn-primary " onclick="alert('Quá trình tạo chiến dịch có thể mất vài phút !');"><i class="fas fa-plus-circle"></i> Tạo chiến dịch</button>
+                  <a href="{{ url_for('show') }}" class="btn btn-danger"><i class="fas fa-window-close"></i> Hủy</a>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+    <div class="col-md-2"></div>
+</div>
+{%endblock%}
+{% block js%}
+<script>
+var form = document.getElementById('form');
+
+form.addEventListener('submit',function(e){
+    e.preventDefault()
+    var name = document.getElementById('name').value;
+    var description = document.getElementById('description').value;
+    var startTime = document.getElementById('startTime').value;
+    var endTime = document.getElementById('endTime').value;
+    var url = document.getElementById('url').value;
+    var links = url.split(",");
+    var keyword = document.getElementById('keyWord').value;
+
+    fetch("/campaign/create",{
+        method:'POST',
+        body:JSON.stringify({
+            name:name,
+            description:description,
+            startTime:startTime,
+            endTime:endTime,
+            links:links,
+            keyword:keyword
+        }),
+        headers:{
+            "Content-Type":"application/json; charset=UTF-8"
+        }
+    })
+    .then(function(response){
+        return response.json()
+    })
+    .then(function(data){
+        console.log(data)
+
+    })
+})
+</script>
+{%endblock%}
