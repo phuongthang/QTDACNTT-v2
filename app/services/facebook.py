@@ -16,7 +16,7 @@ FB_TOKEN_URL = "https://graph.facebook.com/oauth/access_token"
 
 FB_SCOPE = ["email"]
 
-
+# This allows us to use a plain HTTP callback
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 fb = Blueprint("facebook", __name__)
@@ -38,7 +38,7 @@ def callback():
         FB_CLIENT_ID, scope=FB_SCOPE, redirect_uri=URL + "/fb-callback"
     )
 
-    
+    # we need to apply a fix for Facebook here
     facebook = facebook_compliance_fix(facebook)
 
     facebook.fetch_token(
@@ -47,7 +47,7 @@ def callback():
         authorization_response=flask.request.url,
     )
 
-    
+    # Fetch a protected resource, i.e. user profile, via Graph API
 
     facebook_user_data = facebook.get(
         "https://graph.facebook.com/me?fields=id,name,email,picture{url}"
