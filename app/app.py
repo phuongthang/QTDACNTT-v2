@@ -19,44 +19,37 @@ app.register_blueprint(fb)
 db.initialize_db(app)
 model = main_service.init_model()
 
-# Load Login page
+
 @app.route("/")
 def index():
     return render_template("authen/login.html")
 
-# Load Dashboard page
+
 @app.route("/dashboard")
 def dashboard():
     return render_template("dashboard.html")
 
-# Load Index page
+
 @app.route("/show")
 def show():
     return render_template("campaign/index.html")
 
-# Load Create comment page
 @app.route("/create")
 def create():
     return render_template("campaign/create.html")
 
-# Load Detail comment page
+
 @app.route("/detail")
 def detail():
     return render_template("campaign/detail.html")
 
-# Load Comment page
 @app.route("/comments")
 def comments():
     return render_template("campaign/comment.html")
 
-# Load Predict comment page
 @app.route("/predicts")
 def predicts():
     return render_template("campaign/predicts.html")
 
-# Load Edit comment page
-@app.route("/edit-comment")
-def predicts():
-    return render_template("edit/comment.html")
-    
+
 app.run()
